@@ -11,17 +11,16 @@ function BookDetail() {
   const userService = new UserService();
   const [book, setBook] = useState({});
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState({});
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     getBookById(id);
     getallUsers();
-  }, []);
+  }, [book]);
 
   const getBookById = (bookId) => {
     bookService.getBookById(bookId).then((response) => {
       if (response.status === 200) {
-        console.log(response.data.book);
         setBook(response.data.book);
       }
     });
@@ -30,7 +29,6 @@ function BookDetail() {
   const getallUsers = () => {
     userService.getallUsers().then((response) => {
       if (response.status === 200) {
-        console.log(response.data.users);
         setUsers(response.data.users);
       }
     });
@@ -39,13 +37,13 @@ function BookDetail() {
   const borrowBook = () => {
     const data = {
       user_id: selectedUser[0].id,
-      book_id: Number(id)
-    }
-    console.log(data)
-    userService.borrowBookToUser(data).then(response => {
-      console.log(response.data)
-    })
-  }
+      book_id: Number(id),
+    };
+    console.log(data);
+    userService.borrowBookToUser(data).then((response) => {
+      getBookById(Number(id));
+    });
+  };
 
   return (
     <div className="relative overflow-x-auto h-screen">
@@ -88,7 +86,14 @@ function BookDetail() {
               />
             </td>
             <td className="px-6 py-4">
-              <div className="px-2 py-3 bg-white rounded-xl cursor-pointer" onClick={borrowBook}>
+              <div
+                className={`${
+                  book.status === true || selectedUser === null
+                    ? "pointer-events-none cursor-not-allowed opacity-50"
+                    : "hover:bg-gray-200"
+                } px-2 py-3 bg-white rounded-xl cursor-pointer`}
+                onClick={borrowBook}
+              >
                 <p className="text-center text-black text-xs">Borrow</p>
               </div>
             </td>
