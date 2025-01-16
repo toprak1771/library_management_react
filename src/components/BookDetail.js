@@ -3,18 +3,23 @@ import { useParams } from "react-router";
 import BookService from "../services/BookService";
 import Select from "react-dropdown-select";
 import UserService from "../services/UserService";
+import { useDispatch, useSelector } from "react-redux";
+import { addBook } from "../bookSlice";
 
 function BookDetail() {
   let { id } = useParams();
 
+  const _book = useSelector(state => state.book.book)
+  const dispatch = useDispatch()
   const bookService = new BookService();
   const userService = new UserService();
-  const [book, setBook] = useState({});
+  const [book, setBook] = useState(_book);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    getBookById(id);
+    if(Object.keys(_book).length === 0)
+      getBookById(id)
     getallUsers();
   }, [book]);
 
@@ -22,6 +27,7 @@ function BookDetail() {
     bookService.getBookById(bookId).then((response) => {
       if (response.status === 200) {
         setBook(response.data.book);
+        dispatch(addBook(response.data.book))
       }
     });
   };
@@ -39,7 +45,6 @@ function BookDetail() {
       user_id: selectedUser[0].id,
       book_id: Number(id),
     };
-    console.log(data);
     userService.borrowBookToUser(data).then((response) => {
       getBookById(Number(id));
     });

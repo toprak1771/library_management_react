@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import BookService from "../services/BookService";
 import { NavLink } from "react-router";
+import { useDispatch } from "react-redux";
+import { addBook } from "../bookSlice";
 
 function BookComponent() {
+  const dispatch = useDispatch()
+
   const bookService = new BookService();
 
   const [books, setBooks] = useState([]);
@@ -15,7 +19,6 @@ function BookComponent() {
   const getallBooks = () => {
     bookService.getallBooks().then((response) => {
       if (response.status === 200) {
-        console.log(response.data.books);
         setBooks(response.data.books);
         setTableCols(Object.keys(response.data.books[0]));
       }
@@ -64,7 +67,7 @@ function BookComponent() {
               <td className="px-6 py-4">{book.user?.name}</td>
               <td className="px-6 py-4">
                 <NavLink to={"/books/" + book.id}>
-                  <div className="px-2 py-3 bg-white rounded-3xl cursor-pointer">
+                  <div className="px-2 py-3 bg-white rounded-xl cursor-pointer" onClick={() => dispatch(addBook(book))}>
                     <p className="text-center text-black text-xs">
                       Go to Detail{" "}
                     </p>
