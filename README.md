@@ -1,3 +1,20 @@
+Projeyi klonla
+npm i ile bağımlılıkları yükle
+npm run start ile projeyi başlat
+
+Get Users
+http://localhost:3000/ ile anasayfada kullanıcılar listelenir ve kullanıcıların detay sayfasına gidilebilir.
+
+Get User Detail
+http://localhost:3000/users/2 ile kullanıcı sayfasında kullanıcının geçmiş kitapları şu anki kitabı verilir, kullanıcı şu anki kitabını seçerek skor vererek iade edebilir, şu anki kitabı yoksa veya seçmezse return butonu aktif değildir.
+
+Get Books
+http://localhost:3000/books ile kitaplar listelenir şu an bir kullanıcıda ödünç olanlar status true döner ve background kırmızı olur.Burada kitap detay sayfası çok kullanılacağı için hızlı işlemler adına arka tarafda kullanılan redis benzeri redux kullanılmıştır, kullanıcı detay sayfasına bastığında ilgili state tetiklenerek kitap bilgisi doldurularak detay sayfasında database'e işlem atmak yerine bu data kullanılır, eğer bu data boşsa database istek işlemi atılır.
+
+Get Book Detail
+http://localhost:3000/books/2 ile ilgili kitabın detay sayfası listelenir, kitap şu anda bir kullanıcıdaysa borrow butonu aktif değildir, kitap boştaysa ilgili kullanıcı seçilerek borrow butonu ile kitap ödünç verilebilir.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
